@@ -1,23 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <!DOCTYPE OmniWebCookies SYSTEM "http://www.omnigroup.com/DTDs/OmniWebCookies.dtd">
 <OmniWebCookies>
-<domain name=".doubleclick.net">
-  <cookie name="test_cookie" value="CheckForPermission" expires="60579853" />
-</domain>
 <domain name=".ebay.com">
-  <cookie name="lucky9" path="%2F" value="196606" expires="218345384" />
-</domain>
-<domain name="ebay.com">
-  <cookie name="count" path="%2F" value="1" expires="60588000" />
+  <cookie name="lucky9" value="196606" expires="218345384" />
 </domain>
 <domain name=".usatoday.com">
   <cookie name="RMID" value="0cf723a23dec2500" expires="315532799" />
-  <cookie name="USATINFO" value="UID%3D0cf723a23dec2500" expires="788853600" />
   <cookie name="UID" value="0cf723a23dec2500" expires="788853600" />
-  <cookie name="TData" value="" expires="60665352" />
-</domain>
-<domain name="www.usatoday.com">
-  <cookie name="v1st" value="3DEC2504037EF90F" expires="603815280" />
-  <cookie name="orbitzCookie" value="Mon%20Dec%2002%202002%2021%3A29%3A11%20GMT-0600%20%28CST%29" expires="60587999" />
+  <cookie name="USATINFO" value="UID%3D0cf723a23dec2500" expires="788853600" />
 </domain>
 </OmniWebCookies>
