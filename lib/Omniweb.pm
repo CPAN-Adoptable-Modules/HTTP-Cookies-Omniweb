@@ -21,6 +21,15 @@ so it can work with Omniweb cookie files.
 
 See L<HTTP::Cookies>.
 
+=head1 BUGS
+
+Although Omniweb declares that it uses a DTD, the URL to the DTD is
+dead.
+
+Omniweb seems to not store the path for cookies unless it is not
+/, and sometimes it stores it as %2f.  I haven't completely figured
+that out, so output files will not exactly match input files.
+
 =head1 SOURCE AVAILABILITY
 
 This source is part of a SourceForge project which always has the
@@ -33,14 +42,11 @@ members of the project can shepherd this module appropriately.
 
 =head1 AUTHOR
 
-derived from Gisle Aas's HTTP::Cookies::Netscape package with very
-few material changes.
-
-maintained by brian d foy, E<lt>bdfoy@cpan.orgE<gt>
+brian d foy, E<lt>bdfoy@cpan.orgE<gt>
 
 =head1 COPYRIGHT
 
-Copyright 1997-1999 Gisle Aas
+Copyright 2002, brian d foy, All rights reserved
 
 This library is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself.
@@ -55,7 +61,7 @@ use constant FALSE => 'FALSE';
 
 $VERSION = sprintf "%2.%02d", q$Revision$ =~ m/ (\d+) \. (\d+) /xg;
 
-my $EPOCH_OFFSET = $^O eq "MacOS" ? 21600 : 0;  # difference from Unix epoch
+my $EPOCH_OFFSET = 978_350_400;  # difference from Unix epoch
 
 sub load
 	{
@@ -68,29 +74,37 @@ sub load
 
     open my $fh, $file or return;
 
-    my $magic = <$fh>;
+    my $magic = ( <$fh>, <$fh>, <$fh> );
 
-    unless( $magic =~ /^\# HTTP Cookie File/ ) 
+    unless( $magic =~ /^\s*<OmniWebCookies>\s*$/ ) 
     	{
-		warn "$file does not look like a Mozilla cookies file" if $^W;
+		warn "$file does not look like an Omniweb cookies file" if $^W;
 		close $fh;
 		return;
     	}
  
     my $now = time() - $EPOCH_OFFSET;
  
+ 	my $domain;
     while( <$fh> ) 
     	{
-		next if /^\s*\#/;
-		next if /^\s*$/;
-		tr/\n\r//d;
+		$domain = $1 if m/<domain name="(.*?)">/;
+		next if m|</domain>|;
+		last if m|</OmniWebCookies>|;
+		next unless m|<cookie|;
 		
-		my( $domain, $bool1, $path, $secure, $expires, $key, $val ) 
-			= split /\t/;
-			
-		$secure = ( $secure eq TRUE );
-
-		$self->set_cookie(undef, $key, $val, $path, $domain, undef,
+		my $path    = m/path="(.*?)"/ ? $1 : "/";
+		$path =~ s|%2f|/|ig;
+		
+		my $name    = $1 if m/name="(.*?)"/;
+		my $value   = $1 if m/value="(.*?)"/;
+		my $expires = $1 if m/expires="(.*?)"/;
+		
+		#print STDERR "D=$domain P=$path N=$name V=$value E=$expires\n";
+					
+		my $secure = FALSE;
+		
+		$self->set_cookie(undef, $name, $value, $path, $domain, undef,
 			0, $secure, $expires - $now, 0);
     	}
     	
@@ -109,33 +123,39 @@ sub save
     open my $fh, "> $file" or return;
 
     print $fh <<'EOT';
-# HTTP Cookie File
-# http://www.netscape.com/newsref/std/cookie_spec.html
-# This is a generated file!  Do not edit.
-
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!DOCTYPE OmniWebCookies SYSTEM "http://www.omnigroup.com/DTDs/OmniWebCookies.dtd">
+<OmniWebCookies>
 EOT
 
     my $now = time - $EPOCH_OFFSET;
-    $self->scan(
-    	sub {
-			my( $version, $key, $val, $path, $domain, $port,
-				$path_spec, $secure, $expires, $discard, $rest ) = @_;
-
-			return if $discard && not $self->{ignore_discard};
-
-			$expires = $expires ? $expires - $EPOCH_OFFSET : 0;
-
- 			return if $now > $expires;
-
-			$secure = $secure ? TRUE : FALSE;
-
-			my $bool = $domain =~ /^\./ ? TRUE : FALSE;
-
-			print $fh join( "\t", $domain, $bool, $path, $secure, 
-				$expires, $key, $val ), "\n";
-    		}
-    	);
+    
+    foreach my $domain ( sort keys %{ $self->{COOKIES} } )
+    	{
+    	my $domain_hash = $self->{COOKIES}{$domain};
     	
+    	print $fh qq|<domain name="$domain">\n|;
+ 
+ 		PATH: foreach my $path ( sort keys %$domain_hash )
+ 			{
+ 			my $cookie_hash = $domain_hash->{ $path };
+ 			
+			COOKIE: foreach my $name ( sort keys %$cookie_hash )
+				{
+				my( $value, $expires ) = @{ $cookie_hash->{$name} }[ 1, 5 ];
+				$expires -= $EPOCH_OFFSET;
+				my $path_str = $path eq '/' ? '' : qq| path="$path"|;
+				
+				print $fh qq|  <cookie name="$name"$path_str value="$value"| .
+					qq| expires="$expires" />\n|;
+				}
+			}
+    		
+		print $fh "</domain>\n";
+    	}
+
+	print $fh "</OmniWebCookies>\n";
+	 	
     close $fh;
     
     1;
