@@ -46,7 +46,7 @@ brian d foy, C<< <bdfoy@cpan.org> >>
 
 =head1 COPYRIGHT
 
-Copyright 2002-2005d, brian d foy, All rights reserved
+Copyright 2002-2006, brian d foy, All rights reserved
 
 This library is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself.
@@ -65,29 +65,29 @@ my $EPOCH_OFFSET = 978_350_400;  # difference from Unix epoch
 
 sub load
 	{
-    my( $self, $file ) = @_;
+	my( $self, $file ) = @_;
 
-    $file ||= $self->{'file'} || return;
+	$file ||= $self->{'file'} || return;
 
-    local $_;
-    local $/ = "\n";  # make sure we got standard record separator
+	local $_;
+	local $/ = "\n";  # make sure we got standard record separator
 
-    open my $fh, $file or return;
+	open my $fh, $file or return;
 
-    my $magic = ( <$fh>, <$fh>, <$fh> );
+	my $magic = ( <$fh>, <$fh>, <$fh> );
 
-    unless( $magic =~ /^\s*<OmniWebCookies>\s*$/ )
-    	{
+	unless( $magic =~ /^\s*<OmniWebCookies>\s*$/ )
+		{
 		warn "$file does not look like an Omniweb cookies file" if $^W;
 		close $fh;
 		return;
-    	}
+		}
 
-    my $now = time() - $EPOCH_OFFSET;
+	my $now = time() - $EPOCH_OFFSET;
 
- 	my $domain;
-    while( <$fh> )
-    	{
+	my $domain;
+	while( <$fh> )
+		{
 		$domain = $1 if m/<domain name="(.*?)">/;
 		next if m|</domain>|;
 		last if m|</OmniWebCookies>|;
@@ -106,39 +106,39 @@ sub load
 
 		$self->set_cookie(undef, $name, $value, $path, $domain, undef,
 			0, $secure, $expires - $now, 0);
-    	}
+		}
 
-    close $fh;
+	close $fh;
 
-    1;
+	1;
 	}
 
 sub save
 	{
-    my( $self, $file ) = @_;
+	my( $self, $file ) = @_;
 
-    $file ||= $self->{'file'} || return;
+	$file ||= $self->{'file'} || return;
 
-    local $_;
-    open my $fh, "> $file" or return;
+	local $_;
+	open my $fh, "> $file" or return;
 
-    print $fh <<'EOT';
+	print $fh <<'EOT';
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <!DOCTYPE OmniWebCookies SYSTEM "http://www.omnigroup.com/DTDs/OmniWebCookies.dtd">
 <OmniWebCookies>
 EOT
 
-    my $now = time - $EPOCH_OFFSET;
+	my $now = time - $EPOCH_OFFSET;
 
-    foreach my $domain ( sort keys %{ $self->{COOKIES} } )
-    	{
-    	my $domain_hash = $self->{COOKIES}{$domain};
+	foreach my $domain ( sort keys %{ $self->{COOKIES} } )
+		{
+		my $domain_hash = $self->{COOKIES}{$domain};
 
-    	print $fh qq|<domain name="$domain">\n|;
+		print $fh qq|<domain name="$domain">\n|;
 
- 		PATH: foreach my $path ( sort keys %$domain_hash )
- 			{
- 			my $cookie_hash = $domain_hash->{ $path };
+		PATH: foreach my $path ( sort keys %$domain_hash )
+			{
+			my $cookie_hash = $domain_hash->{ $path };
 
 			COOKIE: foreach my $name ( sort keys %$cookie_hash )
 				{
@@ -152,13 +152,13 @@ EOT
 			}
 
 		print $fh "</domain>\n";
-    	}
+		}
 
 	print $fh "</OmniWebCookies>\n";
 
-    close $fh;
+	close $fh;
 
-    1;
+	1;
 	}
 
 1;
