@@ -1,5 +1,8 @@
 # $Id$
 
+1.08 - Sat May 27 02:55:06 2006
+	* Distro cleanups. No need to upgrade.
+
 1.06 - Sat Mar 12 00:00:51 2005
 	* Added POD coverages tests
 	* no code changes: no need to upgrade
