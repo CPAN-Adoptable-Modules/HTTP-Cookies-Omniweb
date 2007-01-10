@@ -7,6 +7,7 @@ WriteMakefile
         (
         'NAME'           => 'HTTP::Cookies::Omniweb',
         'VERSION_FROM'   => 'lib/Omniweb.pm',
+	'LICENSE'       => 'perl',
  		'PREREQ_PM'      => {
  			'HTTP::Cookies'         => '1.25',
  			'Test::More'            => '0',
