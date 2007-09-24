@@ -5,9 +5,11 @@ eval "use Test::Manifest 1.14";
 
 WriteMakefile
 	(
-	'NAME'           => 'HTTP::Cookies::Omniweb',
-	'VERSION_FROM'   => 'lib/Omniweb.pm',
+	'NAME'          => 'HTTP::Cookies::Omniweb',
+	'VERSION_FROM'  => 'lib/Omniweb.pm',
 	'LICENSE'       => 'perl',
+	'AUTHOR'        => 'brian d foy <bdfoy@cpan.org>',
+
 	'PREREQ_PM'      => {
 		'HTTP::Cookies'         => '1.25',
 		'Test::More'            => '0',
