@@ -2,6 +2,9 @@
 package HTTP::Cookies::Omniweb;
 use strict;
 
+use warnings;
+no warnings;
+
 =head1 NAME
 
 HTTP::Cookies::Omniweb - Cookie storage and management for Omniweb
@@ -59,7 +62,7 @@ use vars qw( $VERSION );
 use constant TRUE  => 'TRUE';
 use constant FALSE => 'FALSE';
 
-$VERSION = sprintf "%2d.%02d", q$Revision$ =~ m/ (\d+) \. (\d+) /xg;
+$VERSION = 1.11;
 
 my $EPOCH_OFFSET = 978_350_400;  # difference from Unix epoch
 
