@@ -1,5 +1,9 @@
 # $Id$
 
+1.11 - Sat Nov 10 14:50:56 2007
+ * Cleanups for the move from CVS to SVN, kwalitee
+	* No need to upgrade
+
 1.09 - Tue Jan  9 22:12:13 2007
 	* updated copyright and license info
 	* no code changes, so no need to upgrade
