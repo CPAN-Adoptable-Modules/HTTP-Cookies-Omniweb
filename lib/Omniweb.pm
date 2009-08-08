@@ -1,4 +1,3 @@
-# $Id$
 package HTTP::Cookies::Omniweb;
 use strict;
 
@@ -35,13 +34,9 @@ that out, so output files will not exactly match input files.
 
 =head1 SOURCE AVAILABILITY
 
-This source is part of a SourceForge project which always has the
-latest sources in CVS, as well as all of the previous releases.
+This code is in Github:
 
-	http://sourceforge.net/projects/brian-d-foy/
-
-If, for some reason, I disappear from the world, one of the other
-members of the project can shepherd this module appropriately.
+	http://github.com/briandfoy/HTTP-Cookies-Omniweb/tree/master
 
 =head1 AUTHOR
 
@@ -62,7 +57,7 @@ use vars qw( $VERSION );
 use constant TRUE  => 'TRUE';
 use constant FALSE => 'FALSE';
 
-$VERSION = 1.11;
+$VERSION = '1.12';
 
 my $EPOCH_OFFSET = 978_350_400;  # difference from Unix epoch
 
