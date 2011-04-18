@@ -1,5 +1,9 @@
 # Changes for HTTP::Cookies::Omniweb
 
+1.13 - Mon Apr 18 14:52:11 2011
+	* Update tests with later cookie expiry dates
+	* Everything else works the same as the previous version
+
 1.11 - Sat Nov 10 14:50:56 2007
 	* Cleanups for the move from CVS to SVN, kwalitee
 	* No need to upgrade
