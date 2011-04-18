@@ -57,7 +57,7 @@ use vars qw( $VERSION );
 use constant TRUE  => 'TRUE';
 use constant FALSE => 'FALSE';
 
-$VERSION = '1.12';
+$VERSION = '1.13';
 
 my $EPOCH_OFFSET = 978_350_400;  # difference from Unix epoch
 
