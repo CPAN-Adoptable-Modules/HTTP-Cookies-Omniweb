@@ -1,7 +1,6 @@
 use Test::More tests => 5;
 
 use HTTP::Cookies::Omniweb;
-#use Data::Dumper;
 
 my %Domains = qw( .ebay.com 1 .usatoday.com 3 );
 
@@ -21,5 +20,3 @@ foreach my $domain ( keys %Domains )
 	}
 
 is( $hash->{'.ebay.com'}{'/'}{'lucky9'}[1], '196606', 'Cookie has right value' );
-
-#print STDERR Data::Dumper::Dumper( $jar );
