@@ -118,7 +118,7 @@ sub save
 	$file ||= $self->{'file'} || return;
 
 	local $_;
-	open my $fh, "> $file" or return;
+	open my $fh, '>:encoding(UTF-8)',  $file or return;
 
 	print $fh <<'EOT';
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
