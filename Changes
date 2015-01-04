@@ -1,4 +1,4 @@
-# Changes for HTTP::Cookies::Omniweb
+Revision history for Perl module HTTP::Cookies::Omniweb
 
 1.13 - Mon Apr 18 14:52:11 2011
 	* Update tests with later cookie expiry dates
