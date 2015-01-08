@@ -1,13 +1,15 @@
-require 5.006;
+require 5.008;
 use strict;
 use warnings;
 
-my $github    = 'https://github.com/briandfoy/';
-my $main_file = 'lib/HTTP/Cookies/Omniweb.pm';
+use File::Spec::Functions qw(catfile);
 
+my $module    = 'HTTP::Cookies::Omniweb';
+my $github    = 'https://github.com/briandfoy/http-cookies-omniweb';
+my $main_file = catfile( 'lib', split /::/, "$module.pm" );
 
 my %WriteMakefile = (
-	'NAME'          => 'HTTP::Cookies::Omniweb',
+	'NAME'          => $module,
 	'ABSTRACT_FROM' => $main_file,
 	'VERSION_FROM'  => $main_file,
 	'LICENSE'       => 'perl',
