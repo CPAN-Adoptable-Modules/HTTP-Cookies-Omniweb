@@ -49,7 +49,7 @@ my %WriteMakefile = (
 			},
 		},
 	
-	clean => { FILES => 'HTTP-Cookies-Omniweb-*' },
+	clean => { FILES => "$dist-*" },
 	);
 
 
